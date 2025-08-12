@@ -12,7 +12,9 @@ import Spline from '@splinetool/react-spline';
 import AboutUs from './components/AboutUs';
 import Esummit from './components/Esummit';
 import { HashRouter as Router, Routes, Route  } from 'react-router-dom';
-import {Link} from "react-router-dom"
+import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import IntroAnimation from './components/IntroAnimation/IntroAnimation';
 
 const items = [
   { content: <img className="rotate-90" src="https://i.pravatar.cc/300?img=8" /> },
@@ -45,19 +47,28 @@ const imgs = [
 ];
 
 const App = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowIntro(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <>
+      {showIntro && <IntroAnimation onComplete={() => setShowIntro(false)} />}
+      <ScrollRestoration />
       {/* Navbar */}
       <Navbar />
+      <Outlet/>
 
-
-       <HeroSection />
+      {/* Why is there code in App.jsx??  please find a new place to put all this code*/}
+       {/* <HeroSection />
 
        <Esummit />
 
-       <AboutUs />
+       <AboutUs /> */}
       {/* Stats with Glare Hover */}
-      <GlareHover
+      {/* <GlareHover
         glareColor="#ffffff"
         glareOpacity={0.3}
         glareAngle={-30}
@@ -124,16 +135,9 @@ const App = () => {
             glowColor="252, 152, 52"
           />
         </div>
-      </section>
+      </section> */}
 
        <Footer />
-
-      <Router>
-        <Routes>
-          <Route path="/" element={<HeroSection />} />
-          <Route path="/TheTeam" element={<TheTeam/>} />
-        </Routes>
-      </Router>
     </>
   );
 };
